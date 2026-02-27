@@ -4,7 +4,7 @@ import seaborn as sns
 import streamlit as st
 
 # LOAD DATA
-sales_df = pd.read_csv("https://drive.google.com/file/d/1jl0d_NZzdVB8uoPj0Xor768sPDE9cuip/view?usp=drive_link", parse_dates=["order_purchase_timestamp",
+sales_df = pd.read_csv("dashboard/sales_df.csv", parse_dates=["order_purchase_timestamp",
                                                         "order_delivered_customer_date",
                                                         "order_estimated_delivery_date"])
 
