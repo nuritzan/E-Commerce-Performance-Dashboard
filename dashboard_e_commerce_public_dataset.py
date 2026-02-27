@@ -103,7 +103,7 @@ with tab1:
     fig, ax = plt.subplots()
     ax.bar(yearly_transactions.index.astype(str), yearly_transactions.values)
     ax.set_xlabel("Tahun")
-    ax.set_ylabel("Jumlah Transaksi")
+    ax.set_ylabel("Jumlah Penjualan")
     st.pyplot(fig)
 
     st.subheader("Jumlah Revenue per Tahun")
@@ -173,7 +173,7 @@ with tab3:
 
     fig, ax = plt.subplots()
     ax.barh(top_city.index, top_city.values)
-    ax.set_xlabel("Jumlah Transaksi")
+    ax.set_xlabel("Jumlah Penjualan")
     st.pyplot(fig)
 
     st.subheader("Top 10 Kota dengan Revenue Tertinggi")
