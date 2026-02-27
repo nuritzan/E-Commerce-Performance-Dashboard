@@ -7,16 +7,13 @@ Original file is located at
     https://colab.research.google.com/drive/1pK99C4Ot0uX9GcTcbwLsSYcvH7asNrby
 """
 
-!pip install streamlit
-!pip install babel
-
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import streamlit as st
 
 # LOAD DATA
-sales_df = pd.read_csv("sales_df.csv", parse_dates=["order_purchase_timestamp",
+sales_df = pd.read_csv("https://drive.google.com/file/d/1jl0d_NZzdVB8uoPj0Xor768sPDE9cuip/view?usp=drive_link", parse_dates=["order_purchase_timestamp",
                                                         "order_delivered_customer_date",
                                                         "order_estimated_delivery_date"])
 
