@@ -15,7 +15,7 @@ st.set_page_config(
 def load_data():
     # Gunakan try-except agar tidak error jika path folder berbeda
     try:
-        df = pd.read_csv("dashboard/sales_df.csv", parse_dates=[
+        df = pd.read_csv("sales_df.csv", parse_dates=[
             "order_purchase_timestamp",
             "order_delivered_customer_date",
             "order_estimated_delivery_date"
