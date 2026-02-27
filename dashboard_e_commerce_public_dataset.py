@@ -232,6 +232,6 @@ with tab5:
     st.success("2. **Kategori Unggulan**: Kategori **bed_bath_table** memiliki jumlah penjualan terbanyak, sementara kategori **health_beauty** memimpin dalam total pendapatan.")
     st.success("3. **Dominasi Wilayah**: Kota **Sao Paulo** menjadi pusat transaksi terbesar di Brazil.")
     st.success("4. **Strategi Retensi (RFM)**: Mayoritas pelanggan saat ini adalah *One-Time Buyers* (Frequency ≈ 1). 
-    Perusahaan perlu berfokus pada strategi retensi dan program loyalitas untuk mengubah pembeli sesekali menjadi pelanggan setia")
+    Perusahaan perlu berfokus pada strategi retensi dan program loyalitas untuk mengubah pembeli sesekali menjadi pelanggan setia.")
 
 st.caption("Copyright (c) 2026 - M. Muthi' Nuritzan")
