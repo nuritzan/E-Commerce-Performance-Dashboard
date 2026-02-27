@@ -265,8 +265,8 @@ with tab4:
 with tab5:
     st.subheader("Conclusion")
     st.success("1. **Pertumbuhan Masif**: Bisnis mengalami pertumbuhan pesat dalam setiap tahunnya terakhir, baik dari sisi jumlah transaksi maupun pendapatan.")
-    st.success("2. **Kategori Unggulan**: Kategori **bed_bath_table** memiliki jumlah penjualan terbanyak, sementara kategori **health_beauty** memimpin dalam total pendapatan.")
-    st.success("3. **Dominasi Wilayah**: Kota **Sao Paulo** menjadi pusat transaksi terbesar di Brazil.")
+    st.success("2. **Kategori Unggulan**: Kategori **bed_bath_table** memiliki jumlah penjualan terbanyak, sementara kategori **health_beauty** memimpin dalam total pendapatan. Maka, Produk dengan volume tinggi cocok untuk strategi traffic dan promosi, sedangkan produk dengan revenue tinggi cocok untuk strategi margin dan profit.")
+    st.success("3. **Dominasi Wilayah**: Kota **Sao Paulo** menjadi pusat transaksi terbesar di Brazil. Dengan demikian, fokus promosi di kota tersebut dapat meningkatkan revenue lebih besar serta kota lain dapat dijadikan target ekspansi untuk meningkatkan pertumbuhan.")
     st.success("4. **Strategi Retensi (RFM)**: Mayoritas pelanggan saat ini adalah *One-Time Buyers* (Frequency ≈ 1), sehingga perusahaan perlu berfokus pada strategi retensi dan program loyalitas untuk mengubah pembeli sesekali menjadi pelanggan setia.")
 
 st.caption("Copyright (c) 2026 - M. Muthi' Nuritzan")
