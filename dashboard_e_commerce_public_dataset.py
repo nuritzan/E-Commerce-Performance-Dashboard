@@ -93,14 +93,14 @@ with tab1:
     )
 
     for bar in bars:
-    height = bar.get_height()
-    plt.text(
-        bar.get_x() + bar.get_width() / 2,
-        height,
-        f"{int(height):,}",
-        ha="center",
-        va="bottom"
-    )
+        height = bar.get_height()
+        plt.text(
+            bar.get_x() + bar.get_width() / 2,
+            height,
+            f"{int(height):,}",
+            ha="center",
+            va="bottom"
+        )
 
     fig, ax = plt.subplots()
     ax.bar(yearly_revenue.index.astype(str), yearly_revenue.values)
