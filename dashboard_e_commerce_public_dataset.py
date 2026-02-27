@@ -92,21 +92,6 @@ with tab1:
         sales_df.groupby(sales_df["order_purchase_timestamp"].dt.year)["revenue"].sum()
     )
 
-    bars = plt.bar(
-        yearly_transactions.index.astype(str),
-        yearly_transactions.values
-    )
-
-    for bar in bars:
-        height = bar.get_height()
-        plt.text(
-            bar.get_x() + bar.get_width() / 2,
-            height,
-            f"{int(height):,}",
-            ha="center",
-            va="bottom"
-        )
-
     fig, ax = plt.subplots()
     ax.bar(yearly_revenue.index.astype(str), yearly_revenue.values)
     ax.set_xlabel("Tahun")
@@ -150,6 +135,12 @@ with tab2:
     ax.set_xlabel("Total Revenue")
     st.pyplot(fig)
 
+    st.markdown(f"""
+**Insight**
+- Produk yang paling banyak dibeli adalah bed bath table sebanyak 10.953 buah dan paling sedikit adalah security and service sebanyak 2 buah.
+- Produk yang paling banyak menghasilkan revenue adalah health beauty sebanyak 1,412,089.53 dan yang paling sedikit adalah security and services sebanyak 324.51.
+""")
+
 # TAB 3 - DAERAH
 with tab3:
     st.subheader("Top 10 Kota dengan Transaksi Terbanyak")
@@ -181,11 +172,16 @@ with tab3:
     ax.set_xlabel("Total Revenue")
     st.pyplot(fig)
 
+    st.markdown(f"""
+**Insight**
+- Kota dengan transaksi terbanyak sekaligus menghasilkan revenue tertinggi adalah sao paulo dengan total transaksi sebanyak 17,400 dan revenue 2,107,960.17.
+""")
+
 # TAB 4 - CONCLUSION
 with tab4:
     st.subheader("Conclusion")
-    st.success("1. **Pertumbuhan Masif**: Terjadi lonjakan transaksi signifikan hingga puncak di tahun 2018.")
+    st.success("1. **Pertumbuhan Masif**: Bisnis mengalami pertumbuhan pesat dalam setiap tahunnya terakhir, baik dari sisi jumlah transaksi maupun pendapatan.")
     st.success("2. **Kategori Unggulan**: Kategori **bed_bath_table** memiliki jumlah penjualan terbanyak, sementara kategori **health_beauty** memimpin dalam total pendapatan.")
-    st.success("3. **Dominasi Wilayah**: Kota **Sao Paulo** tetap menjadi pusat transaksi terbesar.")
+    st.success("3. **Dominasi Wilayah**: Kota **Sao Paulo** menjadi pusat transaksi terbesar di Brazil.")
 
 st.caption("Copyright (c) 2026 - M. Muthi' Nuritzan")
