@@ -49,7 +49,7 @@ with st.sidebar:
 # 4. HEADER & METRICS
 st.title("E-Commerce Performance Dashboard")
 
-total_transaksi = sales_df["order_purchase_timestamp"].sum()
+total_transaksi = sales_df["order_purchase_timestamp"].count()
 total_revenue = sales_df["revenue"].sum()
 
 # Hitung ketepatan pengiriman
