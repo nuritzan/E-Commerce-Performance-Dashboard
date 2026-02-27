@@ -4,9 +4,9 @@ import seaborn as sns
 import streamlit as st
 
 # LOAD DATA
-sales_df = pd.read_csv("dashboard/sales_df.csv", parse_dates=["order_purchase_timestamp",
-                                                        "order_delivered_customer_date",
-                                                        "order_estimated_delivery_date"])
+@st.cache_data
+def load_data():
+    return pd.read_csv("dashboard/sales_df.csv")
 
 # PAGE CONFIG
 st.set_page_config(page_title="E-Commerce Performance Dashboard", layout="wide")
