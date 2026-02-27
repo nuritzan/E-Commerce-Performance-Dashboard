@@ -65,10 +65,11 @@ col3.metric("Ketepatan Waktu Pengiriman", f"{ketepatan:.2f}%")
 st.markdown("---")
 
 # 5. TABS
-tab1, tab2, tab3, tab4 = st.tabs([
+tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "📈 Tren Penjualan",
     "📦 Performa Produk",
     "📍 Performa Daerah",
+    "💎 RFM Analysis",
     "📝 Conclusion"
 ])
 
@@ -176,11 +177,61 @@ with tab3:
 - Kota dengan transaksi terbanyak sekaligus menghasilkan revenue tertinggi adalah sao paulo dengan total transaksi sebanyak 17,400 dan revenue 2,107,960.17.
 """)
 
-# TAB 4 - CONCLUSION
+# TAB 4: RFM ANALYSIS
 with tab4:
+    st.subheader("Best Customer Based on RFM Parameters")
+    
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        avg_recency = round(rfm_df.recency.mean(), 1)
+        st.metric("Avg Recency (days)", value=avg_recency)
+        
+    with col2:
+        avg_frequency = round(rfm_df.frequency.mean(), 2)
+        st.metric("Avg Frequency", value=avg_frequency)
+        
+    with col3:
+        avg_monetary = f"R$ {rfm_df.monetary.mean():,.2f}"
+        st.metric("Avg Monetary", value=avg_monetary)
+
+    # Visualisasi RFM
+    fig, ax = plt.subplots(nrows=1, ncols=3, figsize=(35, 15))
+    colors = ["#72BCD4", "#72BCD4", "#72BCD4", "#72BCD4", "#72BCD4"]
+
+    # Recency
+    sns.barplot(y="recency", x="customer_id", data=rfm_df.sort_values(by="recency", ascending=True).head(5), palette=colors, ax=ax[0])
+    ax[0].set_ylabel(None)
+    ax[0].set_xlabel("customer_id", fontsize=30)
+    ax[0].set_title("By Recency (days)", loc="center", fontsize=50)
+    ax[0].tick_params(axis='y', labelsize=30)
+    ax[0].set_xticks([]) # Hilangkan ID yang panjang agar rapi
+
+    # Frequency
+    sns.barplot(y="frequency", x="customer_id", data=rfm_df.sort_values(by="frequency", ascending=False).head(5), palette=colors, ax=ax[1])
+    ax[1].set_ylabel(None)
+    ax[1].set_xlabel("customer_id", fontsize=30)
+    ax[1].set_title("By Frequency", loc="center", fontsize=50)
+    ax[1].tick_params(axis='y', labelsize=30)
+    ax[1].set_xticks([])
+
+    # Monetary
+    sns.barplot(y="monetary", x="customer_id", data=rfm_df.sort_values(by="monetary", ascending=False).head(5), palette=colors, ax=ax[2])
+    ax[2].set_ylabel(None)
+    ax[2].set_xlabel("customer_id", fontsize=30)
+    ax[2].set_title("By Monetary", loc="center", fontsize=50)
+    ax[2].tick_params(axis='y', labelsize=30)
+    ax[2].set_xticks([])
+
+    st.pyplot(fig)
+
+# TAB 5 - CONCLUSION
+with tab5:
     st.subheader("Conclusion")
     st.success("1. **Pertumbuhan Masif**: Bisnis mengalami pertumbuhan pesat dalam setiap tahunnya terakhir, baik dari sisi jumlah transaksi maupun pendapatan.")
     st.success("2. **Kategori Unggulan**: Kategori **bed_bath_table** memiliki jumlah penjualan terbanyak, sementara kategori **health_beauty** memimpin dalam total pendapatan.")
     st.success("3. **Dominasi Wilayah**: Kota **Sao Paulo** menjadi pusat transaksi terbesar di Brazil.")
+    st.success("4. **Strategi Retensi (RFM)**: Mayoritas pelanggan saat ini adalah *One-Time Buyers* (Frequency ≈ 1). 
+    Perusahaan perlu berfokus pada strategi retensi dan program loyalitas untuk mengubah pembeli sesekali menjadi pelanggan setia")
 
 st.caption("Copyright (c) 2026 - M. Muthi' Nuritzan")
