@@ -259,6 +259,7 @@ with tab4:
     st.markdown(f"""
 **Insight**
 - Berdasarkan analisis RFM, dapat dilihat bahwa sebagian kecil customer memiliki nilai pembelian yang tinggi dan masih aktif melakukan transaksi, sehingga termasuk dalam kategori pelanggan terbaik. Namun, secara umum frekuensi pembelian customer relatif rendah yang menunjukkan bahwa sebagian besar pelanggan hanya melakukan transaksi satu kali.
+""")
 
 # TAB 5 - CONCLUSION
 with tab5:
