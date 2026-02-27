@@ -43,14 +43,13 @@ except Exception as e:
 with st.sidebar:
     st.title("🛍️ E-Commerce Dashboard")
     st.markdown("""
-    Analisis performa penjualan marketplace di Brazil.
+    Dashboard ini menyajikan hasil analisis performa penjualan marketplace di brazil pada tahun 2016-2018.
     """)
-    st.image("https://github.com/dicodingacademy/assets/raw/main/logo.png")
 
 # 4. HEADER & METRICS
 st.title("E-Commerce Performance Dashboard")
 
-total_transaksi = sales_df["order_id"].nunique()
+total_transaksi = sales_df["order_purchase_timestamp"].sum()
 total_revenue = sales_df["revenue"].sum()
 
 # Hitung ketepatan pengiriman
@@ -75,54 +74,97 @@ tab1, tab2, tab3, tab4 = st.tabs([
 
 # TAB 1 - TREND
 with tab1:
-    col_a, col_b = st.columns(2)
-    
-    with col_a:
-        st.subheader("Transaksi per Tahun")
-        yearly_transactions = sales_df["order_purchase_timestamp"].dt.year.value_counts().sort_index()
-        fig, ax = plt.subplots(figsize=(10, 6))
-        sns.barplot(x=yearly_transactions.index, y=yearly_transactions.values, palette="Blues_d", ax=ax)
-        st.pyplot(fig)
+    st.subheader("Tren Penjualan per Tahun")
 
-    with col_b:
-        st.subheader("Revenue per Tahun")
-        yearly_revenue = sales_df.groupby(sales_df["order_purchase_timestamp"].dt.year)["revenue"].sum()
-        fig, ax = plt.subplots(figsize=(10, 6))
-        sns.barplot(x=yearly_revenue.index, y=yearly_revenue.values, palette="Greens_d", ax=ax)
-        st.pyplot(fig)
+    yearly_transactions = (
+        sales_df["order_purchase_timestamp"].dt.year.value_counts().sort_index()
+    )
+
+    fig, ax = plt.subplots()
+    ax.bar(yearly_transactions.index.astype(str), yearly_transactions.values)
+    ax.set_xlabel("Tahun")
+    ax.set_ylabel("Jumlah Transaksi")
+    st.pyplot(fig)
+
+    st.subheader("Jumlah Revenue per Tahun")
+
+    yearly_revenue = (
+        sales_df.groupby(sales_df["order_purchase_timestamp"].dt.year)["revenue"].sum()
+    )
+
+    fig, ax = plt.subplots()
+    ax.bar(yearly_revenue.index.astype(str), yearly_revenue.values)
+    ax.set_xlabel("Tahun")
+    ax.set_ylabel("Total Revenue")
+    st.pyplot(fig)
 
 # TAB 2 - PRODUK
 with tab2:
-    st.subheader("Analisis Top 10 Kategori Produk")
-    col_c, col_d = st.columns(2)
+    st.subheader("Top 10 Produk dengan Penjualan Terbanyak")
 
-    with col_c:
-        top_produk = sales_df["product_category_name_english"].value_counts().head(10).sort_values(ascending=True)
-        fig, ax = plt.subplots(figsize=(10, 8))
-        top_produk.plot(kind='barh', color='#72BCD4', ax=ax)
-        ax.set_title("Penjualan Terbanyak")
-        st.pyplot(fig)
+    top_produk = (
+        sales_df["product_category_name_english"]
+        .value_counts()
+        .head(10)
+        .sort_values()
+    )
 
-    with col_d:
-        top_rev_produk = sales_df.groupby("product_category_name_english")["revenue"].sum().sort_values(ascending=False).head(10).sort_values(ascending=True)
-        fig, ax = plt.subplots(figsize=(10, 8))
-        top_rev_produk.plot(kind='barh', color='#88c999', ax=ax)
-        ax.set_title("Revenue Tertinggi")
-        st.pyplot(fig)
+    fig, ax = plt.subplots()
+    ax.barh(top_produk.index, top_produk.values)
+    ax.set_xlabel("Jumlah Penjualan")
+    st.pyplot(fig)
+
+    st.subheader("Top 10 Produk dengan Revenue Tertinggi")
+
+    top_rev_produk = (
+        sales_df.groupby("product_category_name_english")["revenue"]
+        .sum()
+        .sort_values(ascending=False)
+        .head(10)
+        .sort_values()
+    )
+
+    fig, ax = plt.subplots()
+    ax.barh(top_rev_produk.index, top_rev_produk.values)
+    ax.set_xlabel("Total Revenue")
+    st.pyplot(fig)
 
 # TAB 3 - DAERAH
 with tab3:
-    st.subheader("Geografi Penjualan (Top 10 Kota)")
-    top_city = sales_df["customer_city"].value_counts().head(10).sort_values(ascending=True)
-    fig, ax = plt.subplots(figsize=(12, 6))
-    sns.barplot(x=top_city.values, y=top_city.index, palette="rocket", ax=ax)
+    st.subheader("Top 10 Kota dengan Transaksi Terbanyak")
+
+    top_city = (
+        sales_df["customer_city"]
+        .value_counts()
+        .head(10)
+        .sort_values()
+    )
+
+    fig, ax = plt.subplots()
+    ax.barh(top_city.index, top_city.values)
+    ax.set_xlabel("Jumlah Transaksi")
+    st.pyplot(fig)
+
+    st.subheader("Top 10 Kota dengan Revenue Tertinggi")
+
+    top_city_rev = (
+        sales_df.groupby("customer_city")["revenue"]
+        .sum()
+        .sort_values(ascending=False)
+        .head(10)
+        .sort_values()
+    )
+
+    fig, ax = plt.subplots()
+    ax.barh(top_city_rev.index, top_city_rev.values)
+    ax.set_xlabel("Total Revenue")
     st.pyplot(fig)
 
 # TAB 4 - CONCLUSION
 with tab4:
     st.subheader("Conclusion")
     st.success("1. **Pertumbuhan Masif**: Terjadi lonjakan transaksi signifikan hingga puncak di tahun 2018.")
-    st.success("2. **Kategori Unggulan**: Kategori **health_beauty** memimpin dalam total pendapatan.")
+    st.success("2. **Kategori Unggulan**: Kategori **bed_bath_table** memiliki jumlah penjualan terbanyak, sementara kategori **health_beauty** memimpin dalam total pendapatan.")
     st.success("3. **Dominasi Wilayah**: Kota **Sao Paulo** tetap menjadi pusat transaksi terbesar.")
 
 st.caption("Copyright (c) 2026 - M. Muthi' Nuritzan")
