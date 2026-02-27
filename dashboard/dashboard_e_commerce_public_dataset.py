@@ -6,8 +6,11 @@ import streamlit as st
 # LOAD DATA
 @st.cache_data
 def load_data():
-    return pd.read_csv("dashboard/sales_df.csv")
+    return pd.read_csv("dashboard/sales_df.csv", parse_dates=["order_purchase_timestamp",
+                                                        "order_delivered_customer_date",
+                                                        "order_estimated_delivery_date"])
 
+sales_df = load_data()
 # PAGE CONFIG
 st.set_page_config(page_title="E-Commerce Performance Dashboard", layout="wide")
 
