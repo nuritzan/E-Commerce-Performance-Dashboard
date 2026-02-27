@@ -200,6 +200,15 @@ with tab3:
 with tab4:
     st.subheader("Best Customer Based on RFM Parameters")
     
+    # Menyiapkan data untuk visualisasi (Nomor urut sebagai pengganti ID panjang)
+    rfm_vis = rfm_df.copy()
+    
+    # Urutkan berdasarkan monetary sebagai standar awal
+    rfm_vis = rfm_vis.sort_values(by="monetary", ascending=False).reset_index(drop=True)
+    
+    # Membuat label nomor (1, 2, 3...) agar sumbu X tidak berantakan kode unik
+    rfm_vis["customer_label"] = (rfm_vis.index + 1).astype(str)
+
     col1, col2, col3 = st.columns(3)
     
     with col1:
@@ -214,34 +223,37 @@ with tab4:
         avg_monetary = f"R$ {rfm_df.monetary.mean():,.2f}"
         st.metric("Avg Monetary", value=avg_monetary)
 
-    # Visualisasi RFM
-    fig, ax = plt.subplots(nrows=1, ncols=3, figsize=(35, 15))
-    colors = ["#72BCD4", "#72BCD4", "#72BCD4", "#72BCD4", "#72BCD4"]
+    # Memulai Plotting
+    fig, ax = plt.subplots(nrows=1, ncols=3, figsize=(20, 8))
+    colors = ["#72BCD4"] * 5
 
-    # Recency
-    sns.barplot(y="recency", x="customer_id", data=rfm_df.sort_values(by="recency", ascending=True).head(5), palette=colors, ax=ax[0])
+    # 1. Best Customers by Recency
+    # Kita urutkan berdasarkan recency terkecil (paling baru belanja)
+    df_recency = rfm_vis.sort_values(by="recency", ascending=True).head(5)
+    sns.barplot(y="recency", x="customer_label", data=df_recency, palette=colors, ax=ax[0])
     ax[0].set_ylabel(None)
-    ax[0].set_xlabel("customer_id", fontsize=30)
-    ax[0].set_title("By Recency (days)", loc="center", fontsize=50)
-    ax[0].tick_params(axis='y', labelsize=30)
-    ax[0].set_xticks([]) # Hilangkan ID yang panjang agar rapi
+    ax[0].set_xlabel("Customer Rank (by Recency)", fontsize=12)
+    ax[0].set_title("By Recency (days)", loc="center", fontsize=18)
+    ax[0].set_ylim(bottom=0)  # MEMASTIKAN SUMBU Y MULAI DARI 0
+    ax[0].tick_params(axis='x', labelsize=12)
 
-    # Frequency
-    sns.barplot(y="frequency", x="customer_id", data=rfm_df.sort_values(by="frequency", ascending=False).head(5), palette=colors, ax=ax[1])
+    # 2. Best Customers by Frequency
+    df_frequency = rfm_vis.sort_values(by="frequency", ascending=False).head(5)
+    sns.barplot(y="frequency", x="customer_label", data=df_frequency, palette=colors, ax=ax[1])
     ax[1].set_ylabel(None)
-    ax[1].set_xlabel("customer_id", fontsize=30)
-    ax[1].set_title("By Frequency", loc="center", fontsize=50)
-    ax[1].tick_params(axis='y', labelsize=30)
-    ax[1].set_xticks([])
+    ax[1].set_xlabel("Customer Rank (by Frequency)", fontsize=12)
+    ax[1].set_title("By Frequency", loc="center", fontsize=18)
+    ax[1].tick_params(axis='x', labelsize=12)
 
-    # Monetary
-    sns.barplot(y="monetary", x="customer_id", data=rfm_df.sort_values(by="monetary", ascending=False).head(5), palette=colors, ax=ax[2])
+    # 3. Best Customers by Monetary
+    df_monetary = rfm_vis.sort_values(by="monetary", ascending=False).head(5)
+    sns.barplot(y="monetary", x="customer_label", data=df_monetary, palette=colors, ax=ax[2])
     ax[2].set_ylabel(None)
-    ax[2].set_xlabel("customer_id", fontsize=30)
-    ax[2].set_title("By Monetary", loc="center", fontsize=50)
-    ax[2].tick_params(axis='y', labelsize=30)
-    ax[2].set_xticks([])
+    ax[2].set_xlabel("Customer Rank (by Monetary)", fontsize=12)
+    ax[2].set_title("By Monetary", loc="center", fontsize=18)
+    ax[2].tick_params(axis='x', labelsize=12)
 
+    plt.tight_layout()
     st.pyplot(fig)
 
 # TAB 5 - CONCLUSION
