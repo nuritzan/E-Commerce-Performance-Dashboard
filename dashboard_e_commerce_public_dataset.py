@@ -137,9 +137,8 @@ with tab2:
 
     st.markdown(f"""
 **Insight**
-- Produk yang paling banyak dibeli adalah bed bath table sebanyak 10.953 buah dan paling sedikit adalah security and service sebanyak 2 buah.
-- Produk yang paling banyak menghasilkan revenue adalah health beauty sebanyak 1,412,089.53 dan yang paling sedikit adalah security and services sebanyak 324.51.
-""")
+- Produk yang paling banyak dibeli adalah bed bath table sebanyak 10.953 buah.
+- Sementara itu, produk yang paling banyak menghasilkan revenue adalah health beauty sebanyak 1,412,089.53.""")
 
 # TAB 3 - DAERAH
 with tab3:
