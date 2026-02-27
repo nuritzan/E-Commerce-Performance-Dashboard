@@ -39,6 +39,25 @@ except Exception as e:
     st.error(f"Gagal memuat data: {e}")
     st.stop()
 
+# define fungsi RFM
+def create_rfm_df(df):
+    rfm = df.groupby(by="customer_unique_id", as_index=False).agg({
+        "order_purchase_timestamp": "max",
+        "order_id": "nunique",
+        "revenue": "sum"
+    })
+    rfm.columns = ["customer_id", "max_order_timestamp", "frequency", "monetary"]
+    
+    # Hitung Recency
+    recent_date = df["order_purchase_timestamp"].max().date()
+    rfm["max_order_timestamp"] = rfm["max_order_timestamp"].dt.date
+    rfm["recency"] = rfm["max_order_timestamp"].apply(lambda x: (recent_date - x).days)
+    
+    rfm.drop("max_order_timestamp", axis=1, inplace=True)
+    return rfm
+
+rfm_df = create_rfm_df(sales_df)
+
 # 3. SIDEBAR
 with st.sidebar:
     st.title("🛍️ E-Commerce Dashboard")
