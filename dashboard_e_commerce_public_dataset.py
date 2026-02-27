@@ -98,6 +98,12 @@ with tab1:
     ax.set_ylabel("Total Revenue")
     st.pyplot(fig)
 
+    st.markdown(f"""
+**Insight**
+- Penjualan paling banyak adalah di tahun 2018 sebanyak 60,318 transaksi, disusul 2017 sebanyak 49,554 transaksi, dan 2016 sebanyak 317 transaksi.
+- Begitu juga dengan revenue yang dihasilkan paling banyak di tahun 2018 dengan total 8,450,534.68, lalu tahun 2017 sebanyak 6,921,206.41, dan terakhir tahun 2016 sebanyak 46,653.74
+""")
+
 # TAB 2 - PRODUK
 with tab2:
     st.subheader("Top 10 Produk dengan Penjualan Terbanyak")
