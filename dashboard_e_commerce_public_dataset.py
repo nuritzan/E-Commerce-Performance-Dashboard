@@ -60,7 +60,7 @@ ketepatan = (on_time / total_delivery) * 100 if total_delivery > 0 else 0
 col1, col2, col3 = st.columns(3)
 col1.metric("Total Transaksi", f"{total_transaksi:,}")
 col2.metric("Total Revenue", f"R$ {total_revenue:,.2f}")
-col3.metric("Ketepatan Pengiriman", f"{ketepatan:.2f}%")
+col3.metric("Ketepatan Waktu Pengiriman", f"{ketepatan:.2f}%")
 
 st.markdown("---")
 
