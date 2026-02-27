@@ -92,6 +92,11 @@ with tab1:
         sales_df.groupby(sales_df["order_purchase_timestamp"].dt.year)["revenue"].sum()
     )
 
+    bars = plt.bar(
+        yearly_transactions.index.astype(str),
+        yearly_transactions.values
+    )
+
     for bar in bars:
         height = bar.get_height()
         plt.text(
