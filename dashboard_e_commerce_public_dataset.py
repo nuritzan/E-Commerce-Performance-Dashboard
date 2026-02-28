@@ -88,8 +88,8 @@ total_transaksi = ikhtisar_df["order_purchase_timestamp"].count()
 total_revenue = ikhtisar_df["revenue"].sum()
 
 # Hitung ketepatan pengiriman
-on_time = (ikhitsar_df["order_delivered_customer_date"] <= ikhitsars_df["order_estimated_delivery_date"]).sum()
-total_delivery = ikhitsar_df["order_delivered_customer_date"].notna().sum()
+on_time = (ikhtisar_df["order_delivered_customer_date"] <= ikhtisar_df["order_estimated_delivery_date"]).sum()
+total_delivery = ikhtisar_df["order_delivered_customer_date"].notna().sum()
 ketepatan = (on_time / total_delivery) * 100 if total_delivery > 0 else 0
 
 col1, col2, col3 = st.columns(3)
