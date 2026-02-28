@@ -2,6 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import streamlit as st
+import os
 
 # 1. CONFIG HALAMAN
 st.set_page_config(
@@ -13,65 +14,75 @@ st.set_page_config(
 # 2. LOAD DATA
 @st.cache_data
 def load_data():
-    # Gunakan try-except agar tidak error jika path folder berbeda
+    file_path = "sales_df.csv"
     try:
-        df = pd.read_csv("sales_df.csv", parse_dates=[
+        df = pd.read_csv(file_path, parse_dates=[
             "order_purchase_timestamp",
             "order_delivered_customer_date",
             "order_estimated_delivery_date"
         ])
     except FileNotFoundError:
-        df = pd.read_csv("sales_df.csv", parse_dates=[
-            "order_purchase_timestamp",
-            "order_delivered_customer_date",
-            "order_estimated_delivery_date"
-        ])
+        st.error(f"File {file_path} tidak ditemukan!")
+        st.stop()
     
-    # Tambahkan kolom revenue
     if "revenue" not in df.columns:
         df["revenue"] = df["price"] + df["freight_value"]
     return df
 
-# Memanggil data
-try:
-    sales_df = load_data()
-except Exception as e:
-    st.error(f"Gagal memuat data: {e}")
-    st.stop()
+# Master Data (Semua data dari awal sampai akhir)
+all_sales_df = load_data()
 
-# define fungsi RFM
+# FILTER RENTANG WAKTU DI SIDEBAR
+with st.sidebar:
+    st.title("🛍️ E-Commerce Dashboard")
+    
+    # Ambil batas tanggal asli dari data
+    min_date = all_sales_df["order_purchase_timestamp"].min().date()
+    max_date = all_sales_df["order_purchase_timestamp"].max().date()
+    
+    # Widget filter tanggal
+    start_date, end_date = st.date_input(
+        label='Pilih Rentang Waktu',
+        min_value=min_date,
+        max_value=max_date,
+        value=[min_date, max_date]
+    )
+
+# IMPLEMENTASI FILTER (Kunci utama agar visualisasi berubah)
+# sales_df di bawah ini adalah data yang sudah 'dipotong' sesuai pilihan user
+sales_df = all_sales_df[
+    (all_sales_df["order_purchase_timestamp"].dt.date >= start_date) & 
+    (all_sales_df["order_purchase_timestamp"].dt.date <= end_date)
+]
+
+# define fungsi RFM (menggunakan sales_df yang sudah difilter)
 def create_rfm_df(df):
+    if df.empty: return pd.DataFrame()
     rfm = df.groupby(by="customer_unique_id", as_index=False).agg({
         "order_purchase_timestamp": "max",
         "order_id": "nunique",
         "revenue": "sum"
     })
     rfm.columns = ["customer_id", "max_order_timestamp", "frequency", "monetary"]
-    
-    # Hitung Recency
     recent_date = df["order_purchase_timestamp"].max().date()
     rfm["max_order_timestamp"] = rfm["max_order_timestamp"].dt.date
     rfm["recency"] = rfm["max_order_timestamp"].apply(lambda x: (recent_date - x).days)
-    
     rfm.drop("max_order_timestamp", axis=1, inplace=True)
     return rfm
 
+# Hitung RFM dari data terfilter
 rfm_df = create_rfm_df(sales_df)
 
-# 3. SIDEBAR
-with st.sidebar:
-    st.title("🛍️ E-Commerce Dashboard")
-    st.markdown("""
-    Dashboard ini menyajikan hasil analisis performa penjualan marketplace di brazil pada tahun 2016-2018.
-    """)
-
-# 4. HEADER & METRICS
+# 4. HEADER & IKHTISAR
 st.title("E-Commerce Performance Dashboard")
+
+if sales_df.empty:
+    st.warning("Tidak ada data pada rentang waktu ini.")
+    st.stop()
 
 total_transaksi = sales_df["order_purchase_timestamp"].count()
 total_revenue = sales_df["revenue"].sum()
 
-# Hitung ketepatan pengiriman
 on_time = (sales_df["order_delivered_customer_date"] <= sales_df["order_estimated_delivery_date"]).sum()
 total_delivery = sales_df["order_delivered_customer_date"].notna().sum()
 ketepatan = (on_time / total_delivery) * 100 if total_delivery > 0 else 0
